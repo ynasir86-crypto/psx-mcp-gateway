@@ -29,6 +29,30 @@ async function authorized(request: Request) {
       return false;
     }
 
+    async function guarded(request: Request) {
+  if (!secret) {
+    return new Response(
+      "MCP_SECRET is not configured",
+      { status: 500 }
+    );
+  }
+
+  if (!(await authorized(request))) {
+    return new Response(
+      "Unauthorized",
+      {
+        status: 401,
+        headers: {
+          "WWW-Authenticate":
+            `Bearer resource_metadata="https://psx-mcp-gateway.vercel.app/.well-known/oauth-protected-resource"`,
+        },
+      }
+    );
+  }
+
+  return mcpHandler(request);
+    }
+
     const tokenData =
       await validateAccessToken(token);
 
