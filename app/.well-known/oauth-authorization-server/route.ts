@@ -1,7 +1,7 @@
 import {
   OAUTH_ISSUER,
   OAUTH_CLIENT_ID,
-} from "../../../../lib/oauth";
+} from "../../../lib/oauth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
