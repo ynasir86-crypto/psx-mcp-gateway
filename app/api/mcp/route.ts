@@ -9,7 +9,7 @@ import {
   payouts,
   quote,
   symbols,
-} from "../../../../lib/psx";
+} from "../../../lib/psx";
 
 export const GET = guarded;
 export const POST = guarded;
