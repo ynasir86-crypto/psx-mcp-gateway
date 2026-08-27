@@ -56,6 +56,13 @@ export async function GET(request: Request) {
     });
   }
 
+  console.log("OAUTH AUTHORIZE OK", {
+  clientId,
+  redirectUri,
+  codeChallengePresent: !!codeChallenge,
+  codeChallengeMethod,
+});
+  
   const html = `
 <!doctype html>
 <html>
@@ -146,11 +153,37 @@ export async function POST(request: Request) {
     );
   }
 
+  try {
+  console.log("OAUTH TOKEN CODE CREATION START");
+
   const code = await createAuthorizationCode({
     clientId,
     redirectUri,
     codeChallenge,
   });
+
+  console.log("OAUTH TOKEN CODE CREATED");
+
+  const callback = new URL(redirectUri);
+  callback.searchParams.set("code", code);
+
+  if (state) {
+    callback.searchParams.set("state", state);
+  }
+
+  return Response.redirect(callback.toString(), 302);
+} catch (error) {
+  console.error("OAUTH CODE CREATION ERROR:", error);
+
+  return new Response(
+    `OAuth code creation failed: ${
+      error instanceof Error
+        ? error.message
+        : String(error)
+    }`,
+    { status: 500 }
+  );
+  }
 
   const callback = new URL(redirectUri);
 
