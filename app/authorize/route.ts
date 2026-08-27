@@ -42,20 +42,18 @@ export async function GET(request: Request) {
   }
 
   if (responseType !== "code") {
-    return new Response(
-      "Unsupported response_type",
-      { status: 400 }
-    );
+    return new Response("Unsupported response_type", {
+      status: 400,
+    });
   }
 
   if (
     !codeChallenge ||
     codeChallengeMethod !== "S256"
   ) {
-    return new Response(
-      "PKCE S256 is required",
-      { status: 400 }
-    );
+    return new Response("PKCE S256 is required", {
+      status: 400,
+    });
   }
 
   const html = `
@@ -140,8 +138,7 @@ export async function POST(request: Request) {
   }
 
   if (
-    password !==
-    process.env.OAUTH_ADMIN_PASSWORD
+    password !== process.env.OAUTH_ADMIN_PASSWORD
   ) {
     return new Response(
       "Invalid authorization password",
@@ -176,4 +173,4 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
-      }
+}
