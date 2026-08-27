@@ -25,10 +25,13 @@ export async function GET(request: Request) {
     });
   }
 
-  if (redirectUri !== OAUTH_REDIRECT_URI) {
-    return new Response("Invalid redirect_uri", {
-      status: 400,
-    });
+  if (
+  !redirectUri ||
+  redirectUri !== OAUTH_REDIRECT_URI
+) {
+  return new Response("Invalid redirect_uri", {
+    status: 400
+  });
   }
 
   if (responseType !== "code") {
