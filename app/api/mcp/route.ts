@@ -1,9 +1,16 @@
+import { createMcpHandler } from "mcp-handler";
+import { z } from "zod";
+import {
+  announcements,
+  eod,
+  intraday,
+  marketSnapshot,
+  marketWatch,
+  payouts,
+  quote,
+  symbols,
+} from "../../../../lib/psx";
 
-export async function GET() {
-  return Response.json({
-    ok: true,
-    service: "psx-mcp-gateway",
-    version: "1.0.0",
-    time: new Date().toISOString(),
-  });
-}
+export const GET = guarded;
+export const POST = guarded;
+export const DELETE = guarded;
