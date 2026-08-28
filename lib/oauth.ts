@@ -1,3 +1,6 @@
+import { Redis } from "@upstash/redis";
+import { createHash, randomBytes } from "crypto";
+
 import {
   OAUTH_CLIENT_ID,
   OAUTH_REDIRECT_URI,
@@ -226,6 +229,8 @@ export async function POST(request: Request) {
           ? error.message
           : String(error)
       }`,
+
+      
       { status: 500 }
     );
   }
@@ -238,4 +243,11 @@ function escapeHtml(value: string) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#039;");
+}export async function validateAccessToken(
+  token: string
+) {
+  return await redis.get<{
+    clientId: string;
+    createdAt: number;
+  }>(`oauth:token:${token}`);
 }
